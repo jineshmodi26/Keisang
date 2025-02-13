@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
+import axios from "axios"
+
 import {
     BarChart,
     Bar,
@@ -11,21 +13,32 @@ import {
     ResponsiveContainer
 } from 'recharts';
 
-const data = [
-    { date: 'Page A', count: 4000 },
-    { date: 'Page B', count: 3000 },
-    { date: 'Page C', count: 2000 },
-    { date: 'Page D', count: 2780 },
-    { date: 'Page E', count: 1890 },
-];
-const MSRPChart = () => {
+const Chart = ({duration, service}) => {
 
+    const [data, setData] = useState([])
     const [selected, setSelected] = useState("new");
+    // const [duration, setDuration] = useState("last year")
+
+    useEffect(() => {
+        axios({
+            method: "POST",
+            url: "http://localhost:8080/api/inventory",
+            data: {
+                service: service,
+                condition: selected,
+                duration: duration
+            }
+        }).then((res) => {
+            setData(res.data)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }, [selected, duration])
 
     return (
         <>
             <div className='count-chart-main'>
-                <p style={{ fontWeight: "bold" }}>Average MSRP in USD</p>
+                <p style={{ fontWeight: "bold" }}>{service}</p>
                 <button className='chart-button' style={ selected === "new" ? { backgroundColor: "#FF9926", color: "white" } : null} onClick={() => {setSelected("new")}}>NEW</button>
                 <button className='chart-button' style={ selected === "used" ? { backgroundColor: "#FF9926", color: "white" } : null} onClick={() => {setSelected("used")}}>USED</button>
                 <button className='chart-button' style={ selected === "cpo" ? { backgroundColor: "#FF9926", color: "white" } : null} onClick={() => {setSelected("cpo")}}>CPO</button>
@@ -46,4 +59,4 @@ const MSRPChart = () => {
     )
 }
 
-export default MSRPChart
+export default Chart

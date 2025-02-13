@@ -1,10 +1,9 @@
 const fs = require("fs")
-const csvParser = require("csv-parser")
 const Papa = require('papaparse');
 
 module.exports = {
     getCount: async (req, res) => {
-
+      try {
         // Load CSV Data into memory
         let inventoryData = [];
         fs.readFile('data.csv', 'utf8', (err, data) => {
@@ -32,6 +31,8 @@ module.exports = {
             return res.status(400).json({ error: 'Both condition and duration are required' });
           }
         
+          // if (req.body.service === "Inventory Count") {}
+
           const currentDate = new Date();
           let startDate;
           let timeIntervals = [];
@@ -152,5 +153,8 @@ module.exports = {
           res.status(200).json(responseData);
 
           });
+      } catch (error) {
+        console.log(error)
+      }
     }
 }

@@ -1,8 +1,12 @@
 import React from "react";
 import { Drawer, Button, FormGroup, FormControlLabel, Checkbox, Typography } from "@mui/material";
 import Divider from "@mui/material/Divider";
+import { useState } from "react";
 
 export default function FilterDrawer({ filters, setFilters, open, toggleDrawer, setDuration }) {
+
+  const [applied, setApplied] = useState(false)
+
   const handleChange = (category, key) => (event) => {
     if (event.target.checked) {
       // Allow only one checkbox to be checked at a time within the category
@@ -24,7 +28,7 @@ export default function FilterDrawer({ filters, setFilters, open, toggleDrawer, 
   };
 
   return (
-    <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+    <Drawer anchor="right" open={applied ? !open : open} onClose={toggleDrawer(false)}>
       <div style={{ width: 300, padding: 20 }}>
         <Typography variant="h6" style={{ fontWeight: "bold", paddingBottom: "10px" }}>
           Filter Data By
@@ -67,7 +71,7 @@ export default function FilterDrawer({ filters, setFilters, open, toggleDrawer, 
           style={{ marginTop: 10 }}
           sx={{ backgroundColor: "#FF9926" }}
           onClick={() => {
-            
+            setApplied(true)
           }}
         >
           Apply Filter

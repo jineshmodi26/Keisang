@@ -4,8 +4,7 @@ import Appbar from '../components/Appbar'
 import FilterDrawer from "../components/FilterDrawer";
 import Divider from '@mui/material/Divider';
 import Data from "../components/Data";
-import CountChart from "../components/CountChart";
-import MSRPChart from "../components/MSRPChart";
+import Chart from "../components/DataChart";
 import DataTable from "../components/DataTable";
 
 const Dashboard = () => {
@@ -14,16 +13,16 @@ const Dashboard = () => {
   const [filters, setFilters] = useState({
     makes: { Ford: true, Cadillac: false, Jeep: false },
     durations: {
-      "Last Month": true,
+      "Last Month": false,
       "This Month": false,
       "Last 3 Months": false,
       "Last 6 Months": false,
       "This Year": false,
-      "Last Year": false,
+      "Last Year": true,
     },
   });
   
-  const [duration, setDuration] = useState("last month")
+  const [duration, setDuration] = useState("last year")
 
   const toggleDrawer = (state) => () => {
     setOpen(state);
@@ -51,10 +50,10 @@ const Dashboard = () => {
       <Data />
     </div>
     <div>
-      <CountChart duration={duration}/>
+      <Chart duration={duration} service="Inventory Count"/>
     </div>
     <div>
-      <MSRPChart filters={filters}/>
+      <Chart duration={duration} service="Average MSRP"/>
     </div>
     <div>
       <DataTable />
